@@ -14,6 +14,7 @@ module OmniAuth
       # access_type: 'offline'    - retrieve a refresh token http://developers.channeladvisor.com/rest/#917
       # approval_prompt: 'force'  - always show grant screen http://developers.channeladvisor.com/rest/#917
       option :authorize_options, [:scope, :access_type, :approval_prompt]
+      option :redirect_uri
 
       NAME_KEY = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name".freeze
       UID_KEY = "urn:ca:claim:profile".freeze
@@ -30,6 +31,11 @@ module OmniAuth
         {
           'raw_info' => raw_info
         }
+      end
+
+      def callback_url
+        override = options.redirect_uri
+        override ? override : super
       end
 
       def info_hash
